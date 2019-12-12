@@ -9,7 +9,6 @@ class TodosContainer extends Component {
     todos: []
   };
   
-
   componentDidMount() {
     this.fetchData();
   };
@@ -34,14 +33,29 @@ class TodosContainer extends Component {
       this.setState({ todos: todos });
     });
   };
+  // to delete the todo
+  //
+  deleteTodo = (todo) => {
+    TodoModel.delete(todo).then(data => {
+      let todos = this.state.todos.filter(todo => {
+        return todo._id !== data._id;
+      })
+      this.setState({ todos: todos })
+    }   )
+  }
 
+  
+  //
   render() {
     return (
       <div className='todosComponent'>
         <CreateTodoForm
           createTodo={this.createTodo} />
 
-        <Todos todos={this.state.todos} />
+        <Todos
+          todos={this.state.todos}
+          deleteTodo={this.deleteTodo}
+        />
       </div>
     );
   };
